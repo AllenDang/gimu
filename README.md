@@ -1,2 +1,2 @@
 # gimu
-Immediate GUI for go based on cimgui
+Immediate GUI for go based nuklear.
