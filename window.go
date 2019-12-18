@@ -33,11 +33,10 @@ func (w *Window) MasterWindow() *MasterWindow {
 }
 
 func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, builder BuilderFunc) {
-	rect := nk.NkRect(float32(bounds.Min.X), float32(bounds.Min.Y), float32(bounds.Max.X), float32(bounds.Max.Y))
-	if nk.NkBegin(w.ctx, title, rect, nk.Flags(flags)) > 0 {
+	if nk.NkBegin(w.ctx, title, toNkRect(bounds), nk.Flags(flags)) > 0 {
 		builder(w)
+		nk.NkEnd(w.ctx)
 	}
-	nk.NkEnd(w.ctx)
 }
 
 func (w *Window) Row(height float32) *row {
@@ -97,4 +96,41 @@ func (w *Window) Checkbox(label string, active *bool) {
 
 func (w *Window) Radio(label string, active bool) bool {
 	return nk.NkOptionLabel(w.ctx, label, toInt32(active)) > 0
+}
+
+func (w *Window) SelectableLabel(label string, align string, selected *bool) {
+	i := toInt32(*selected)
+	nk.NkSelectableLabel(w.ctx, label, toNkFlag(align), &i)
+	*selected = i > 0
+}
+
+type PopupType int32
+
+const (
+	PopupStatic  = iota
+	PopupDynamic = 1
+)
+
+func (w *Window) Popup(title string, popupType PopupType, flag WindowFlag, bounds image.Rectangle, builder BuilderFunc) bool {
+	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, nk.Flags(flag), toNkRect(bounds))
+	if result > 0 {
+		builder(w)
+		nk.NkPopupEnd(w.ctx)
+	}
+
+	return result > 0
+}
+
+func (w *Window) ClosePopup() {
+	nk.NkPopupClose(w.ctx)
+}
+
+func (w *Window) Group(title string, flag WindowFlag, builder BuilderFunc) bool {
+	result := nk.NkGroupBegin(w.ctx, title, nk.Flags(flag))
+	if result > 0 {
+		builder(w)
+		nk.NkGroupEnd(w.ctx)
+	}
+
+	return result > 0
 }

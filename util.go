@@ -1,6 +1,7 @@
 package gimu
 
 import (
+	"image"
 	"image/color"
 	"unsafe"
 
@@ -70,4 +71,8 @@ func getDynamicWidth(ctx *nk.Context) float32 {
 	bounds := nk.NkLayoutWidgetBounds(ctx)
 	padding := ctx.Style().Window().Padding().X()
 	return bounds.W() - (padding * 2)
+}
+
+func toNkRect(rect image.Rectangle) nk.Rect {
+	return nk.NkRect(float32(rect.Min.X), float32(rect.Min.Y), float32(rect.Max.X), float32(rect.Max.Y))
 }
