@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
+	"log"
+	"os"
 	"runtime"
 
 	"github.com/AllenDang/gimu"
@@ -22,6 +25,7 @@ var (
 	selected1     bool
 	selected2     bool
 	showPopup     bool
+	picture       *gimu.Texture
 )
 
 func msgbox(w *gimu.Window) {
@@ -115,8 +119,10 @@ func updatefn(w *gimu.Window) {
 			widgets(w)
 		})
 		w.Group("Group2", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
-			w.Row(0).Dynamic(1)
-			w.Label("Group2", "CC")
+			w.Row(170).Static(300)
+			if picture != nil {
+				w.Image(picture)
+			}
 		})
 	})
 }
@@ -124,7 +130,24 @@ func updatefn(w *gimu.Window) {
 func main() {
 	runtime.LockOSThread()
 
+	// Create master window
 	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 600, gimu.MasterWindowFlagDefault)
+
+	// Load png image
+	fn, err := os.Open("gopher.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer fn.Close()
+
+	img, err := png.Decode(fn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if img != nil {
+		rgba := gimu.ImgToRgba(img)
+		picture = gimu.RgbaToTexture(rgba)
+	}
 
 	wnd.Main(updatefn)
 }

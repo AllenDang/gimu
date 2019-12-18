@@ -3,9 +3,10 @@ package gimu
 import (
 	"image"
 	"image/color"
+	"image/draw"
 	"unsafe"
 
-	"github.com/AllenDang/nuklear/nk"
+	"github.com/AllenDang/gimu/nk"
 )
 
 func toNkFlag(align string) nk.Flags {
@@ -75,6 +76,17 @@ func getDynamicWidth(ctx *nk.Context) float32 {
 
 func toNkRect(rect image.Rectangle) nk.Rect {
 	return nk.NkRect(float32(rect.Min.X), float32(rect.Min.Y), float32(rect.Max.X), float32(rect.Max.Y))
+}
+
+func ImgToRgba(img image.Image) *image.RGBA {
+	switch trueim := img.(type) {
+	case *image.RGBA:
+		return trueim
+	default:
+		copy := image.NewRGBA(trueim.Bounds())
+		draw.Draw(copy, trueim.Bounds(), trueim, image.Pt(0, 0), draw.Src)
+		return copy
+	}
 }
 
 type Texture struct {

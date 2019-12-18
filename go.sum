@@ -1,8 +1,6 @@
-github.com/AllenDang/nuklear v0.0.0-20191217113542-c937b4da5a72 h1:/TBo8LS5d4217B7FKnLHObXSwiqMXYW7OMkbIS6uldc=
-github.com/AllenDang/nuklear v0.0.0-20191217113542-c937b4da5a72/go.mod h1:zfDuYEPQR5Ad+qs3/GVnuvJvIsznqRtHc5RNVREsUUU=
 github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7 h1:SCYMcCJ89LjRGwEa0tRluNRiMjZHalQZrVrvTbPh+qw=
 github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
-github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72 h1:b+9H1GAsx5RsjvDFLoS5zkNBzIQMuVKUYQDmxU3N5XE=
-github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
+github.com/go-gl/glfw v0.0.0-20191125211704-12ad95a8df72 h1:LgLYrxDRSVv3kStk6louYTP1ekZ6t7HZY/X05KUyaeM=
+github.com/go-gl/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/xlab/closer v0.0.0-20190328110542-03326addb7c2 h1:LPYwXwwHigHHFX3SFa9W9zBIa5reyaLJos2e95eHh68=
 github.com/xlab/closer v0.0.0-20190328110542-03326addb7c2/go.mod h1:Y8IYP9aVODN3Vnw1FCqygCG5IWyYBeBlZqQ5aX+fHFw=

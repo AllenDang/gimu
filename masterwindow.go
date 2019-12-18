@@ -1,6 +1,6 @@
 package gimu
 
-import "github.com/AllenDang/nuklear/nk"
+import "github.com/AllenDang/gimu/nk"
 
 type BuilderFunc func(w *Window)
 

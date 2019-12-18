@@ -1,7 +1,7 @@
 package gimu
 
 import (
-	"github.com/AllenDang/nuklear/nk"
+	"github.com/AllenDang/gimu/nk"
 )
 
 type TextEdit struct {

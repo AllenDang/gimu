@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/AllenDang/nuklear/nk"
+	"github.com/AllenDang/gimu/nk"
 )
 
 type WindowFlag int32
