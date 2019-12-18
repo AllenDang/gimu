@@ -2,6 +2,7 @@ package gimu
 
 import (
 	"image/color"
+	"unsafe"
 
 	"github.com/AllenDang/nuklear/nk"
 )
@@ -38,4 +39,22 @@ func toNkColor(c color.RGBA) nk.Color {
 	nc := nk.NewColor()
 	nc.SetRGBA(nk.Byte(c.R), nk.Byte(c.G), nk.Byte(c.B), nk.Byte(c.A))
 	return *nc
+}
+
+func toNkRune(r rune) nk.Rune {
+	return *(*nk.Rune)(unsafe.Pointer(&r))
+}
+
+func toGoRune(r nk.Rune) rune {
+	return *(*rune)(unsafe.Pointer(&r))
+}
+
+func toNkPluginFilter(f EditFilter) func(*nk.TextEdit, nk.Rune) int32 {
+	return func(nt *nk.TextEdit, r nk.Rune) int32 {
+		result := f(toGoRune(r))
+		if result {
+			return 1
+		}
+		return 0
+	}
 }

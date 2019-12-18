@@ -2,7 +2,7 @@ package gimu
 
 import "github.com/AllenDang/nuklear/nk"
 
-type UpdateFn func(*Window)
+type BuilderFunc func(w *Window)
 
 type MasterWindow struct {
 	wnd *nk.MasterWindow
@@ -22,7 +22,7 @@ func NewMasterWindow(title string, width, height int, flag MasterWindowFlag) *Ma
 	return &MasterWindow{wnd: wnd}
 }
 
-func (mw *MasterWindow) Main(updatefn UpdateFn) {
+func (mw *MasterWindow) Main(updatefn BuilderFunc) {
 	window := &Window{
 		ctx: mw.wnd.GetContext(),
 		mw:  mw,

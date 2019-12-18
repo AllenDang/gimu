@@ -32,12 +32,11 @@ func (w *Window) MasterWindow() *MasterWindow {
 	return w.mw
 }
 
-func (w *Window) Begin(title string, bounds image.Rectangle, flags WindowFlag) bool {
+func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, builder BuilderFunc) {
 	rect := nk.NkRect(float32(bounds.Min.X), float32(bounds.Min.Y), float32(bounds.Max.X), float32(bounds.Max.Y))
-	return nk.NkBegin(w.ctx, title, rect, nk.Flags(flags)) > 0
-}
-
-func (w *Window) End() {
+	if nk.NkBegin(w.ctx, title, rect, nk.Flags(flags)) > 0 {
+		builder(w)
+	}
 	nk.NkEnd(w.ctx)
 }
 

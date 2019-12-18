@@ -12,13 +12,17 @@ func (r *row) Dynamic(col int32) {
 }
 
 func (r *row) Static(width ...float32) {
-	nk.NkLayoutRowBegin(r.ctx, nk.LayoutStatic, r.height, int32(len(width)))
+	nk.NkLayoutRowTemplateBegin(r.ctx, r.height)
 
 	for _, w := range width {
-		nk.NkLayoutRowPush(r.ctx, w)
+		if w == 0 {
+			nk.NkLayoutRowTemplatePushDynamic(r.ctx)
+		} else {
+			nk.NkLayoutRowTemplatePushStatic(r.ctx, w)
+		}
 	}
 
-	nk.NkLayoutRowEnd(r.ctx)
+	nk.NkLayoutRowTemplateEnd(r.ctx)
 }
 
 func (r *row) Ratio(ratio ...float32) {
