@@ -58,3 +58,16 @@ func toNkPluginFilter(f EditFilter) func(*nk.TextEdit, nk.Rune) int32 {
 		return 0
 	}
 }
+
+func toInt32(b bool) int32 {
+	if b {
+		return 1
+	}
+	return 0
+}
+
+func getDynamicWidth(ctx *nk.Context) float32 {
+	bounds := nk.NkLayoutWidgetBounds(ctx)
+	padding := ctx.Style().Window().Padding().X()
+	return bounds.W() - (padding * 2)
+}

@@ -58,3 +58,25 @@ func (w *Window) LabelColored(content string, textColor color.RGBA, align string
 func (w *Window) Button(content string) bool {
 	return nk.NkButtonLabel(w.ctx, content) > 0
 }
+
+func (w *Window) Progress(current *uint, max uint, modifiable bool) {
+	nk.NkProgress(w.ctx, (*nk.Size)(current), nk.Size(max), toInt32(modifiable))
+}
+
+func (w *Window) ComboSimple(labels []string, selected int32, itemHeight int32, dropDownWidth, dropDownHeight float32) int32 {
+	if dropDownWidth == 0 {
+		dropDownWidth = getDynamicWidth(w.ctx)
+	}
+	return nk.NkCombo(w.ctx, labels, int32(len(labels)), selected, itemHeight, nk.NkVec2(dropDownWidth, dropDownHeight))
+}
+
+func (w *Window) ComboLabel(label string, dropDownWidth, dropDownHeight float32, itemBuilder BuilderFunc) {
+	if dropDownWidth == 0 {
+		dropDownWidth = getDynamicWidth(w.ctx)
+	}
+
+	if nk.NkComboBeginLabel(w.ctx, label, nk.NkVec2(dropDownWidth, dropDownHeight)) > 0 {
+		itemBuilder(w)
+		nk.NkComboEnd(w.ctx)
+	}
+}
