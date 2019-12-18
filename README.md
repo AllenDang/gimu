@@ -19,7 +19,6 @@ Supported platforms are:
 * Windows 64-bit
 * OS X
 * Linux
-* Android
 
 The desktop support is achieved using [GLFW](https://github.com/go-gl/glfw) and there are backends written in Go for OpenGL 3.2.
 
