@@ -134,3 +134,7 @@ func (w *Window) Group(title string, flag WindowFlag, builder BuilderFunc) bool 
 
 	return result > 0
 }
+
+func (w *Window) Image(texture *Texture) {
+	nk.NkImage(w.ctx, texture.image)
+}

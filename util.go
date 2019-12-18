@@ -76,3 +76,14 @@ func getDynamicWidth(ctx *nk.Context) float32 {
 func toNkRect(rect image.Rectangle) nk.Rect {
 	return nk.NkRect(float32(rect.Min.X), float32(rect.Min.Y), float32(rect.Max.X), float32(rect.Max.Y))
 }
+
+type Texture struct {
+	image nk.Image
+}
+
+func RgbaToTexture(rgba *image.RGBA) *Texture {
+	var textureId uint32
+	return &Texture{
+		image: nk.RgbaToNkImage(&textureId, rgba),
+	}
+}
