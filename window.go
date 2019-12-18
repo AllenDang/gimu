@@ -80,3 +80,21 @@ func (w *Window) ComboLabel(label string, dropDownWidth, dropDownHeight float32,
 		nk.NkComboEnd(w.ctx)
 	}
 }
+
+func (w *Window) PropertyInt(label string, min int32, val *int32, max int32, step int32, incPerPixel float32) {
+	nk.NkPropertyInt(w.ctx, label, min, val, max, step, incPerPixel)
+}
+
+func (w *Window) PropertyFloat(label string, min float32, val *float32, max float32, step float32, incPerPixel float32) {
+	nk.NkPropertyFloat(w.ctx, label, min, val, max, step, incPerPixel)
+}
+
+func (w *Window) Checkbox(label string, active *bool) {
+	i := toInt32(*active)
+	nk.NkCheckboxLabel(w.ctx, label, &i)
+	*active = i > 0
+}
+
+func (w *Window) Radio(label string, active bool) bool {
+	return nk.NkOptionLabel(w.ctx, label, toInt32(active)) > 0
+}

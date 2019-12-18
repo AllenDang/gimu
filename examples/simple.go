@@ -10,11 +10,15 @@ import (
 )
 
 var (
-	textedit   = gimu.NewTextEdit()
-	selected   int32
-	comboLabel string
-	num1       uint = 11
-	num2       uint = 33
+	textedit      = gimu.NewTextEdit()
+	selected      int32
+	comboLabel    string
+	num1          uint = 11
+	num2          uint = 33
+	propertyInt   int32
+	propertyFloat float32
+	checked       bool
+	option        int = 1
 )
 
 func updatefn(w *gimu.Window) {
@@ -31,6 +35,8 @@ func updatefn(w *gimu.Window) {
 			fmt.Println("Button has been clicked")
 		}
 
+		w.Label("Combobox", "LC")
+
 		selected = w.ComboSimple([]string{"Item1", "Item2", "Item3"}, selected, 25, 0, 200)
 
 		comboLabel = fmt.Sprintf("%d", num1+num2)
@@ -46,8 +52,30 @@ func updatefn(w *gimu.Window) {
 			w.Label(fmt.Sprintf("%d", num2), "CC")
 		})
 
+		w.Label("Properties", "LC")
+		w.PropertyInt("Age", 1, &propertyInt, 100, 10, 1)
+		w.PropertyFloat("Height", 1, &propertyFloat, 10, 0.2, 1)
+
+		w.Label("Checkbox", "LC")
 		w.Row(25).Static(0, 100)
-		textedit.Edit(w, gimu.EditField, gimu.EditFilterBinary)
+		w.Checkbox("Check me", &checked)
+		w.Label(fmt.Sprintf("%v", checked), "LC")
+
+		w.Row(25).Dynamic(1)
+		w.Label("Radio", "LC")
+		w.Row(25).Dynamic(3)
+		if op1 := w.Radio("Option 1", option == 1); op1 {
+			option = 1
+		}
+		if op2 := w.Radio("Option 2", option == 2); op2 {
+			option = 2
+		}
+		if op3 := w.Radio("Option 3", option == 3); op3 {
+			option = 3
+		}
+
+		w.Row(25).Static(0, 100)
+		textedit.Edit(w, gimu.EditField, gimu.EditFilterDefault)
 		if w.Button("Print") {
 			fmt.Println(textedit.GetString())
 		}
@@ -57,7 +85,7 @@ func updatefn(w *gimu.Window) {
 func main() {
 	runtime.LockOSThread()
 
-	wnd := gimu.NewMasterWindow("Simple Demo", 400, 400, gimu.MasterWindowFlagDefault)
+	wnd := gimu.NewMasterWindow("Simple Demo", 400, 500, gimu.MasterWindowFlagDefault)
 
 	wnd.Main(updatefn)
 }
