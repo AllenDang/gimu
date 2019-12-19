@@ -10,6 +10,7 @@ import (
 	"runtime"
 
 	"github.com/AllenDang/gimu"
+	"github.com/AllenDang/gimu/nk"
 )
 
 var (
@@ -27,6 +28,7 @@ var (
 	showPopup     bool
 	picture       *gimu.Texture
 	slider        int32 = 33
+	customFont    *nk.Font
 )
 
 func msgbox(w *gimu.Window) {
@@ -162,7 +164,13 @@ func updatefn(w *gimu.Window) {
 				w.SliderInt(0, &slider, 100, 1)
 			})
 			w.Button("Right click me")
+
+			// Custom font
+			// w.PushFont(customFont)
+			// w.Label("你好啊!这是一行中文", "LC")
+			// w.PopFont()
 		})
+
 	})
 }
 
@@ -171,6 +179,13 @@ func main() {
 
 	// Create master window
 	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 700, gimu.MasterWindowFlagDefault)
+
+	// Load font
+	// config := nk.NkFontConfig(14)
+	// config.SetOversample(1, 1)
+	// config.SetRange(nk.NkFontChineseGlyphRanges())
+	//
+	// customFont = gimu.LoadFontFromFile("/Library/Fonts/Microsoft/SimHei.ttf", 14, &config)
 
 	// Load png image
 	fn, err := os.Open("gopher.png")
