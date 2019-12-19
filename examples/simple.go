@@ -10,7 +10,6 @@ import (
 	"runtime"
 
 	"github.com/AllenDang/gimu"
-	"github.com/AllenDang/gimu/nk"
 )
 
 var (
@@ -28,7 +27,7 @@ var (
 	showPopup     bool
 	picture       *gimu.Texture
 	slider        int32 = 33
-	customFont    *nk.Font
+	// customFont    *nk.Font
 )
 
 func msgbox(w *gimu.Window) {
@@ -121,8 +120,8 @@ func updatefn(w *gimu.Window) {
 	w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
 		_, h := w.MasterWindow().GetSize()
 		w.Row(float32(h - 10)).Dynamic(2)
-		w.Group("Group1", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
-			widgets(w)
+		w.Group("Group1", gimu.WindowBorder|gimu.WindowTitle, func(g1 *gimu.Window) {
+			widgets(g1)
 		})
 		w.Group("Group2", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
 			// Menu
@@ -166,9 +165,9 @@ func updatefn(w *gimu.Window) {
 			w.Button("Right click me")
 
 			// Custom font
-			// w.PushFont(customFont)
+			// gimu.SetFont(w.MasterWindow().GetContext(), customFont)
 			// w.Label("你好啊!这是一行中文", "LC")
-			// w.PopFont()
+			// gimu.SetFont(w.MasterWindow().GetContext(), w.MasterWindow().GetDefaultFont())
 		})
 
 	})
