@@ -113,6 +113,179 @@ Define a row with two widgets each of them will have same width.
 w.Row(25).Dynamic(2)
 ```
 
+## Widgets usage
+
+Most of the widget's usage are very straight forward.
+
+### Common widgets
+
+#### Label
+
+The second parameter of label indicates the text alignment.
+
+```go
+w.Label("Label caption", "LC")
+```
+
+"LC" means horizontally left and vertically center.
+
+"LT" means horizontally left and vertically top.
+
+The alignment char layout is listed below, you could use any combinations of those.
+
+   T
+
+L-C-R
+
+   B
+
+#### Selectable Label
+
+Label can be toggled by mouse click.
+
+```go
+var selected bool
+w.SelectableLabel("Selectable 1", "LC", &selected1)
+```
+
+#### Button
+
+Button function will return a bool to indicate whether it was clicked.
+
+```go
+clicked := w.Button("Click Me")
+if clicked {
+  // Do something here
+}
+```
+
+#### Progressbar
+
+Progress could be readonly or modifiable.
+
+```go
+progress := 0
+// Modifiable
+w.Progress(&progress, 100, true)
+// Readonly
+w.Progress(&progress, 100, false)
+```
+
+To read current progress or update progress bar, just set the progress variable.
+
+#### Slider
+
+Slider behaves like progress bar but step control.
+
+```go
+var slider int
+w.SliderInt(0, &slider, 100, 1)
+```
+
+#### Property widgets
+
+It contains a label and a adjustable control to modify int or float variable.
+
+``` go
+var propertyInt int
+var propertyFloat float32
+w.PropertyInt("Age", 1, &propertyInt, 100, 10, 1)
+w.PropertyFloat("Height", 1, &propertyFloat, 10, 0.2, 1)
+```
+
+#### Checkbox
+
+```go
+var checked bool
+w.Checkbox("Check me", &checked)
+```
+
+#### Radio
+
+```go
+option := 1
+if op1 := w.Radio("Option 1", option == 1); op1 {
+  option = 1
+}
+if op2 := w.Radio("Option 2", option == 2); op2 {
+  option = 2
+}
+if op3 := w.Radio("Option 3", option == 3); op3 {
+  option = 3
+}
+```
+
+### Popups
+
+#### Tooltip
+
+**Note: Tooltip has to be placed above the widget which wants a tooltip when mouse hovering.**
+
+```go
+w.Tooltip("This is a tooltip")
+w.Button("Hover me to see tooltip")
+```
+
+#### Popup Window
+
+```go
+func msgbox(w *gimu.Window) {
+	opened := w.Popup("Message", gimu.PopupStatic, gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, image.Rect(30, 10, 300, 100), func(w *gimu.Window) {
+		w.Row(25).Dynamic(1)
+		w.Label("Here is a pop up window", "LC")
+		if w.Button("Close") {
+			showPopup = false
+			w.ClosePopup()
+		}
+	})
+	if !opened {
+		showPopup = false
+	}
+}
+```
+
+### Menu
+
+#### Window Menu
+
+**Note: window menu bar has to be the first widget in the builder method.**
+
+```go
+// Menu
+w.Menubar(func(w *gimu.Window) {
+  w.Row(25).Static(60, 60)
+  // Menu 1
+  w.Menu("Menu1", "CC", 200, 100, func(w *gimu.Window) {
+    w.Row(25).Dynamic(1)
+    w.MenuItemLabel("Menu item 1", "LC")
+    w.MenuItemLabel("Menu item 2", "LC")
+    w.Button("Button inside menu")
+  })
+  // Menu 2
+  w.Menu("Menu2", "CC", 100, 100, func(w *gimu.Window) {
+    w.Row(25).Dynamic(1)
+    w.MenuItemLabel("Menu item 1", "LC")
+    w.SliderInt(0, &slider, 100, 1)
+    w.MenuItemLabel("Menu item 2", "LC")
+  })
+})
+```
+
+#### Contextual Menu
+
+**Note: Contextual menu has to be placed above the widget which wants a tooltip when right click.**
+
+You could put any kind of widgets inside the contextual menu.
+
+```go
+w.Contextual(0, 100, 300, func(w *gimu.Window) {
+  w.Row(25).Dynamic(1)
+  w.ContextualLabel("Context menu 1", "LC")
+  w.ContextualLabel("Context menu 1", "LC")
+  w.SliderInt(0, &slider, 100, 1)
+})
+w.Button("Right click me")
+```
 
 ## License
 
