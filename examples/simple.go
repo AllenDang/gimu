@@ -127,7 +127,7 @@ func updatefn(w *gimu.Window) {
 			w.Menubar(func(w *gimu.Window) {
 				w.Row(25).Static(60, 60)
 				// Menu 1
-				w.Menu("Menu1", "CC", 100, 100, func(w *gimu.Window) {
+				w.Menu("Menu1", "CC", 200, 100, func(w *gimu.Window) {
 					w.Row(25).Dynamic(1)
 					w.MenuItemLabel("Menu item 1", "LC")
 					w.MenuItemLabel("Menu item 2", "LC")
