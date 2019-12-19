@@ -26,6 +26,7 @@ var (
 	selected2     bool
 	showPopup     bool
 	picture       *gimu.Texture
+	slider        int32 = 33
 )
 
 func msgbox(w *gimu.Window) {
@@ -76,6 +77,9 @@ func widgets(w *gimu.Window) {
 	w.Label("Properties", "LC")
 	w.PropertyInt("Age", 1, &propertyInt, 100, 10, 1)
 	w.PropertyFloat("Height", 1, &propertyFloat, 10, 0.2, 1)
+
+	w.Label("Slider", "LC")
+	w.SliderInt(0, &slider, 100, 1)
 
 	w.Label("Checkbox", "LC")
 	w.Row(25).Static(0, 100)
@@ -133,6 +137,7 @@ func updatefn(w *gimu.Window) {
 				w.Menu("Menu2", "CC", 100, 100, func(w *gimu.Window) {
 					w.Row(25).Dynamic(1)
 					w.MenuItemLabel("Menu item 1", "LC")
+					w.SliderInt(0, &slider, 100, 1)
 					w.MenuItemLabel("Menu item 2", "LC")
 				})
 
@@ -148,6 +153,15 @@ func updatefn(w *gimu.Window) {
 			w.Row(25).Dynamic(1)
 			w.Tooltip("This is a tooltip")
 			w.Button("Hover me to see tooltip")
+
+			// Contextual menu
+			w.Contextual(0, 100, 300, func(w *gimu.Window) {
+				w.Row(25).Dynamic(1)
+				w.ContextualLabel("Context menu 1", "LC")
+				w.ContextualLabel("Context menu 1", "LC")
+				w.SliderInt(0, &slider, 100, 1)
+			})
+			w.Button("Right click me")
 		})
 	})
 }
@@ -156,7 +170,7 @@ func main() {
 	runtime.LockOSThread()
 
 	// Create master window
-	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 600, gimu.MasterWindowFlagDefault)
+	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 700, gimu.MasterWindowFlagDefault)
 
 	// Load png image
 	fn, err := os.Open("gopher.png")

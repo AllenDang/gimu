@@ -175,3 +175,23 @@ func (w *Window) GetCanvas() *Canvas {
 func (w *Window) GetStyle() *nk.Style {
 	return w.ctx.GetStyle()
 }
+
+func (w *Window) Contextual(flag WindowFlag, width, height int, builder BuilderFunc) {
+	bounds := nk.NkWidgetBounds(w.ctx)
+	if nk.NkContextualBegin(w.ctx, nk.Flags(flag), nk.NkVec2(float32(width), float32(height)), bounds) > 0 {
+		builder(w)
+		nk.NkContextualEnd(w.ctx)
+	}
+}
+
+func (w *Window) ContextualLabel(label, align string) bool {
+	return nk.NkContextualItemLabel(w.ctx, label, toNkFlag(align)) > 0
+}
+
+func (w *Window) SliderInt(min int32, val *int32, max int32, step int32) {
+	nk.NkSliderInt(w.ctx, min, val, max, step)
+}
+
+func (w *Window) SliderFloat(min float32, val *float32, max float32, step float32) {
+	nk.NkSliderFloat(w.ctx, min, val, max, step)
+}
