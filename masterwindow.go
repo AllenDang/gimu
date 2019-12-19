@@ -91,21 +91,6 @@ func (w *MasterWindow) LoadDefaultFont() {
 	nk.NkFontStashEnd()
 }
 
-func (w *MasterWindow) LoadFontFromFile(filePath string, size float32, config *nk.FontConfig) {
-	atlas := nk.NewFontAtlas()
-	nk.NkFontStashBegin(&atlas)
-
-	f := nk.NkFontAtlasAddFromFile(atlas, filePath, size, config)
-
-	nk.NkFontStashEnd()
-
-	if f == nil {
-		closer.Fatalln("Failed to load font")
-	}
-
-	nk.NkStyleSetFont(w.GetContext(), f.Handle())
-}
-
 func (w *MasterWindow) Main(builder BuilderFunc) {
 	// Load default font
 	w.LoadDefaultFont()

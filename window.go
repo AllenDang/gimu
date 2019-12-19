@@ -39,6 +39,14 @@ func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, 
 	}
 }
 
+func (w *Window) PushFont(font *nk.Font) bool {
+	return nk.NkStylePushFont(w.ctx, font.Handle()) > 0
+}
+
+func (w *Window) PopFont() {
+	nk.NkStylePopFont(w.ctx)
+}
+
 func (w *Window) Row(height float32) *row {
 	return &row{
 		ctx:    w.ctx,

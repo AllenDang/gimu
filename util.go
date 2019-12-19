@@ -99,3 +99,16 @@ func RgbaToTexture(rgba *image.RGBA) *Texture {
 		image: nk.RgbaToNkImage(&textureId, rgba),
 	}
 }
+
+func LoadFontFromFile(filePath string, size float32, config *nk.FontConfig) *nk.Font {
+	atlas := nk.NewFontAtlas()
+	nk.NkFontStashBegin(&atlas)
+	f := nk.NkFontAtlasAddFromFile(atlas, filePath, size, config)
+	nk.NkFontStashEnd()
+
+	return f
+}
+
+func SetFont(ctx *nk.Context, font *nk.Font) {
+	nk.NkStyleSetFont(ctx, font.Handle())
+}
