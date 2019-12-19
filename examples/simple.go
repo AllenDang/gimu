@@ -10,6 +10,7 @@ import (
 	"runtime"
 
 	"github.com/AllenDang/gimu"
+	"github.com/AllenDang/gimu/nk"
 )
 
 var (
@@ -123,7 +124,7 @@ func updatefn(w *gimu.Window) {
 		w.Group("Group1", gimu.WindowBorder|gimu.WindowTitle, func(g1 *gimu.Window) {
 			widgets(g1)
 		})
-		w.Group("Group2", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+		w.Group("Group2", gimu.WindowTitle|gimu.WindowNoScrollbar, func(w *gimu.Window) {
 			// Menu
 			w.Menubar(func(w *gimu.Window) {
 				w.Row(25).Static(60, 60)
@@ -144,30 +145,69 @@ func updatefn(w *gimu.Window) {
 
 			})
 
-			// Image
-			w.Row(170).Static(300)
-			if picture != nil {
-				w.Image(picture)
-			}
+			w.Row((float32(h-10) / 3) - 9).Dynamic(1)
 
-			// Tooltip
-			w.Row(25).Dynamic(1)
-			w.Tooltip("This is a tooltip")
-			w.Button("Hover me to see tooltip")
+			w.Group("Group2-1", gimu.WindowBorder, func(w *gimu.Window) {
+				// Image
+				w.Row(170).Static(300)
+				if picture != nil {
+					w.Image(picture)
+				}
 
-			// Contextual menu
-			w.Contextual(0, 100, 300, func(w *gimu.Window) {
+				// Tooltip
 				w.Row(25).Dynamic(1)
-				w.ContextualLabel("Context menu 1", "LC")
-				w.ContextualLabel("Context menu 1", "LC")
-				w.SliderInt(0, &slider, 100, 1)
-			})
-			w.Button("Right click me")
+				w.Tooltip("This is a tooltip")
+				w.Button("Hover me to see tooltip")
 
-			// Custom font
-			// gimu.SetFont(w.MasterWindow().GetContext(), customFont)
-			// w.Label("你好啊!这是一行中文", "LC")
-			// gimu.SetFont(w.MasterWindow().GetContext(), w.MasterWindow().GetDefaultFont())
+				// Contextual menu
+				w.Contextual(0, 100, 300, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.ContextualLabel("Context menu 1", "LC")
+					w.ContextualLabel("Context menu 1", "LC")
+					w.SliderInt(0, &slider, 100, 1)
+				})
+				w.Button("Right click me")
+
+				// Custom font
+				// gimu.SetFont(w.MasterWindow().GetContext(), customFont)
+				// w.Label("你好啊!这是一行中文", "LC")
+				// gimu.SetFont(w.MasterWindow().GetContext(), w.MasterWindow().GetDefaultFont())
+
+			})
+
+			w.Group("Group2-2", gimu.WindowBorder, func(w *gimu.Window) {
+				w.Tree(nk.TreeNode, "Tree node1", nk.Minimized, "Tree node1", 0, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.Label("Label inside tree node", "LC")
+					w.SliderInt(0, &slider, 100, 1)
+					w.Label("Label inside tree node", "LC")
+					w.Checkbox("Checkbox", &checked)
+				})
+				w.Tree(nk.TreeNode, "Tree node2", nk.Maximized, "Tree node2", 0, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+				})
+			})
+
+			w.Group("Group2-3", gimu.WindowBorder, func(w *gimu.Window) {
+				w.Tree(nk.TreeTab, "Tree node21", nk.Maximized, "Tree node21", 0, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.Label("Label inside tree node", "LC")
+					w.SliderInt(0, &slider, 100, 1)
+					w.Label("Label inside tree node", "LC")
+					w.Checkbox("Checkbox", &checked)
+				})
+				w.Tree(nk.TreeTab, "Tree node22", nk.Minimized, "Tree node22", 0, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+					w.Label("Label inside tree node", "LC")
+				})
+			})
 		})
 
 	})
@@ -177,7 +217,7 @@ func main() {
 	runtime.LockOSThread()
 
 	// Create master window
-	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 700, gimu.MasterWindowFlagDefault)
+	wnd := gimu.NewMasterWindow("Simple Demo", 1000, 800, gimu.MasterWindowFlagDefault)
 
 	// Load font
 	// config := nk.NkFontConfig(14)

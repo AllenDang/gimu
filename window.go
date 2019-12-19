@@ -195,3 +195,10 @@ func (w *Window) SliderInt(min int32, val *int32, max int32, step int32) {
 func (w *Window) SliderFloat(min float32, val *float32, max float32, step float32) {
 	nk.NkSliderFloat(w.ctx, min, val, max, step)
 }
+
+func (w *Window) Tree(treeType nk.TreeType, title string, initialState nk.CollapseStates, hash string, seed int32, builder BuilderFunc) {
+	if nk.NkTreePushHashed(w.ctx, treeType, title, initialState, hash, int32(len(hash)), seed) > 0 {
+		builder(w)
+		nk.NkTreePop(w.ctx)
+	}
+}
