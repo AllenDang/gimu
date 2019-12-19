@@ -100,6 +100,14 @@ func RgbaToTexture(rgba *image.RGBA) *Texture {
 	}
 }
 
+func LoadDefaultFont() *nk.Font {
+	atlas := nk.NewFontAtlas()
+	nk.NkFontStashBegin(&atlas)
+	nk.NkFontStashEnd()
+
+	return atlas.DefaultFont()
+}
+
 func LoadFontFromFile(filePath string, size float32, config *nk.FontConfig) *nk.Font {
 	atlas := nk.NewFontAtlas()
 	nk.NkFontStashBegin(&atlas)

@@ -32,6 +32,7 @@ type MasterWindow struct {
 	maxVertexBuffer  int
 	maxElementBuffer int
 	bgColor          nk.Color
+	defaultFont      *nk.Font
 }
 
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlag) *MasterWindow {
@@ -85,15 +86,13 @@ func (w *MasterWindow) GetContext() *nk.Context {
 	return w.ctx
 }
 
-func (w *MasterWindow) LoadDefaultFont() {
-	atlas := nk.NewFontAtlas()
-	nk.NkFontStashBegin(&atlas)
-	nk.NkFontStashEnd()
+func (w *MasterWindow) GetDefaultFont() *nk.Font {
+	return w.defaultFont
 }
 
 func (w *MasterWindow) Main(builder BuilderFunc) {
 	// Load default font
-	w.LoadDefaultFont()
+	w.defaultFont = LoadDefaultFont()
 	w.GetContext().SetStyle(nk.THEME_DARK)
 
 	window := Window{
