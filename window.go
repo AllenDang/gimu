@@ -138,3 +138,27 @@ func (w *Window) Group(title string, flag WindowFlag, builder BuilderFunc) bool 
 func (w *Window) Image(texture *Texture) {
 	nk.NkImage(w.ctx, texture.image)
 }
+
+func (w *Window) Menubar(builder BuilderFunc) {
+	nk.NkMenubarBegin(w.ctx)
+	builder(w)
+	nk.NkMenubarEnd(w.ctx)
+}
+
+func (w *Window) Menu(label string, align string, width, height int, builder BuilderFunc) {
+	if nk.NkMenuBeginLabel(w.ctx, label, toNkFlag(align), nk.NkVec2(float32(width), float32(height))) > 0 {
+		builder(w)
+		nk.NkMenuEnd(w.ctx)
+	}
+}
+
+func (w *Window) MenuItemLabel(label, align string) bool {
+	return nk.NkMenuItemLabel(w.ctx, label, toNkFlag(align)) > 0
+}
+
+func (w *Window) Tooltip(label string) {
+	bounds := nk.NkWidgetBounds(w.ctx)
+	if nk.NkInputIsMouseHoveringRect(w.ctx.Input(), bounds) > 0 {
+		nk.NkTooltip(w.ctx, label)
+	}
+}

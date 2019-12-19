@@ -119,10 +119,35 @@ func updatefn(w *gimu.Window) {
 			widgets(w)
 		})
 		w.Group("Group2", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+			// Menu
+			w.Menubar(func(w *gimu.Window) {
+				w.Row(25).Static(60, 60)
+				// Menu 1
+				w.Menu("Menu1", "CC", 100, 100, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.MenuItemLabel("Menu item 1", "LC")
+					w.MenuItemLabel("Menu item 2", "LC")
+					w.Button("Button inside menu")
+				})
+				// Menu 2
+				w.Menu("Menu2", "CC", 100, 100, func(w *gimu.Window) {
+					w.Row(25).Dynamic(1)
+					w.MenuItemLabel("Menu item 1", "LC")
+					w.MenuItemLabel("Menu item 2", "LC")
+				})
+
+			})
+
+			// Image
 			w.Row(170).Static(300)
 			if picture != nil {
 				w.Image(picture)
 			}
+
+			// Tooltip
+			w.Row(25).Dynamic(1)
+			w.Tooltip("This is a tooltip")
+			w.Button("Hover me to see tooltip")
 		})
 	})
 }
