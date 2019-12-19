@@ -1,8 +1,9 @@
-# gimu
+# agimu
 
 Immediate GUI for go based nuklear.
 
-Package nk provides Go bindings for nuklear.h — a small ANSI C gui library. See [github.com/Immediate-Mode-UI/Nuklear](https://github.com/Immediate-Mode-UI/Nuklear).<br />
+Package nk provides Go bindings for nuklear.h — a small ANSI C gui library. See [github.com/Immediate-Mode-UI/Nuklear](https://github.com/Immediate-Mode-UI/Nuklear).
+
 All the binding code has automatically been generated with rules defined in [nk.yml](/nk.yml).
 
 This package provides a go-style idiomatic wrapper for nuklear.
@@ -242,17 +243,22 @@ w.Button("Hover me to see tooltip")
 
 ```go
 func msgbox(w *gimu.Window) {
-	opened := w.Popup("Message", gimu.PopupStatic, gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, image.Rect(30, 10, 300, 100), func(w *gimu.Window) {
-		w.Row(25).Dynamic(1)
-		w.Label("Here is a pop up window", "LC")
-		if w.Button("Close") {
-			showPopup = false
-			w.ClosePopup()
-		}
-	})
-	if !opened {
-		showPopup = false
-	}
+  opened := w.Popup(
+    "Message", 
+    gimu.PopupStatic, 
+    gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, 
+    image.Rect(30, 10, 300, 100), 
+    func(w *gimu.Window) {
+      w.Row(25).Dynamic(1)
+      w.Label("Here is a pop up window", "LC")
+      if w.Button("Close") {
+        showPopup = false
+        w.ClosePopup()
+      }
+    })
+  if !opened {
+    showPopup = false
+  }
 }
 ```
 
