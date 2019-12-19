@@ -215,6 +215,18 @@ if op3 := w.Radio("Option 3", option == 3); op3 {
 }
 ```
 
+#### Textedit
+
+Textedit is special because it will retain the input string, so you will have to explicitly create it and call the Edit() function in BuilderFunc.
+
+```go
+textedit := gimu.NewTextEdit()
+
+func builder(w *gimu.Window) {
+  textedit.Edit(w, gimu.EditField, gimu.EditFilterDefault)
+}
+```
+
 ### Popups
 
 #### Tooltip
