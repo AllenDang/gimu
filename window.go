@@ -166,3 +166,12 @@ func (w *Window) Tooltip(label string) {
 		nk.NkTooltip(w.ctx, label)
 	}
 }
+
+func (w *Window) GetCanvas() *Canvas {
+	c := nk.NkWindowGetCanvas(w.ctx)
+	return &Canvas{buffer: c}
+}
+
+func (w *Window) GetStyle() *nk.Style {
+	return w.ctx.GetStyle()
+}
