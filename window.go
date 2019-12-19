@@ -46,6 +46,10 @@ func (w *Window) Row(height float32) *row {
 	}
 }
 
+func (w *Window) Spacing(cols int32) {
+	nk.NkSpacing(w.ctx, cols)
+}
+
 func (w *Window) Label(content string, align string) {
 	nk.NkLabel(w.ctx, content, toNkFlag(align))
 }

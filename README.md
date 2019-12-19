@@ -22,7 +22,7 @@ Supported platforms are:
 
 The desktop support is achieved using [GLFW](https://github.com/go-gl/glfw) and there are backends written in Go for OpenGL 3.2.
 
-## Installation
+### Installation
 
 Just go get it and everythings ready to work.
 
@@ -30,11 +30,11 @@ Just go get it and everythings ready to work.
 go get -u github.com/AllenDang/gimu
 ```
 
-## Getting start
+### Getting start
 
 Let's create a simple demo.
 
-```
+```go
 package main
 
 import (
@@ -73,7 +73,45 @@ func main() {
 }
 ```
 
-Save, run.
+Save and run.
+
+### Layout system
+
+Layouting in general describes placing widget inside a window with position and size. While in this particular implementation there are two different APIs for layouting
+
+All layouting methods in this library are based around the concept of a row.
+
+A row has a height the window content grows by and a number of columns and each layouting method specifies how each widget is placed inside the row.
+
+After a row has been allocated by calling a layouting functions and then filled with widgets will advance an internal pointer over the allocated row. 
+
+To actually define a layout you just call the appropriate layouting function and each subsequent widget call will place the widget as specified. Important here is that if you define more widgets then columns defined inside the layout functions it will allocate the next row without you having to make another layouting call.
+
+#### Static layout
+
+Define a row with 25px height with two widgets.
+
+```go
+w.Row(25).Static(50, 50)
+```
+
+Use the magic number 0 to define a widget will auto expand if there is enough space.
+
+```go
+w.Row(25).Static(0, 50)
+w.Label("I'm a auto growth label", "LC")
+w.Button("I'm a button with fixed width")
+```
+
+#### Dynamic layout
+
+It provides each widgets with same horizontal space inside the row and dynamically grows if the owning window grows in width. 
+
+Define a row with two widgets each of them will have same width.
+
+```go
+w.Row(25).Dynamic(2)
+```
 
 
 ## License
