@@ -78,7 +78,7 @@ Save and run.
 
 ### Deploy
 
-gimu provides a tool to pack compiled executable for several platform to enable.
+gimu provides a tool to pack compiled executable for several platform to enable app icon and etc.
 
 ```
 go get -u github.com/AllenDang/gimu/cmd/gmdeploy
