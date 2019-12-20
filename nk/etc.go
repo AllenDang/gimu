@@ -45,6 +45,10 @@ func (ctx *Context) Input() *Input {
 	return (*Input)(&ctx.input)
 }
 
+func (ctx *Context) Current() *Window {
+	return (*Window)(ctx.current)
+}
+
 func (ctx *Context) Style() *Style {
 	return (*Style)(&ctx.style)
 }

@@ -70,8 +70,9 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlag) *M
 	}
 }
 
-func (w *MasterWindow) GetSize() (width, height int) {
-	return w.win.GetSize()
+func (w *MasterWindow) GetSize() (width, height int32) {
+	gw, gh := w.win.GetSize()
+	return int32(gw), int32(gh)
 }
 
 func (w *MasterWindow) SetBgColor(color color.RGBA) {

@@ -15,15 +15,6 @@ func NewTextEdit() *TextEdit {
 	return &TextEdit{editor: edt}
 }
 
-type EditFlag int32
-
-const (
-	EditSimple = EditFlag(nk.EditSimple)
-	EditField  = EditFlag(nk.EditField)
-	EditBox    = EditFlag(nk.EditBox)
-	EditEditor = EditFlag(nk.EditEditor)
-)
-
 type EditFilter func(rune) bool
 
 func EditFilterDefault(r rune) bool {
@@ -54,8 +45,8 @@ func EditFilterBinary(r rune) bool {
 	return nk.NkFilterBinary(nil, toNkRune(r)) > 0
 }
 
-func (t *TextEdit) Edit(w *Window, flag EditFlag, filter EditFilter) {
-	nk.NkEditBuffer(w.ctx, nk.Flags(flag), t.editor, toNkPluginFilter(filter))
+func (t *TextEdit) Edit(w *Window, flag nk.Flags, filter EditFilter) {
+	nk.NkEditBuffer(w.ctx, flag, t.editor, toNkPluginFilter(filter))
 }
 
 func (t *TextEdit) GetString() string {

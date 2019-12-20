@@ -39,15 +39,15 @@ func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, 
 	}
 }
 
-func (w *Window) Row(height float32) *row {
+func (w *Window) Row(height int) *row {
 	return &row{
 		ctx:    w.ctx,
 		height: height,
 	}
 }
 
-func (w *Window) Spacing(cols int32) {
-	nk.NkSpacing(w.ctx, cols)
+func (w *Window) Spacing(cols int) {
+	nk.NkSpacing(w.ctx, int32(cols))
 }
 
 func (w *Window) Label(content string, align string) {
@@ -66,11 +66,11 @@ func (w *Window) Progress(current *uint, max uint, modifiable bool) {
 	nk.NkProgress(w.ctx, (*nk.Size)(current), nk.Size(max), toInt32(modifiable))
 }
 
-func (w *Window) ComboSimple(labels []string, selected int32, itemHeight int32, dropDownWidth, dropDownHeight float32) int32 {
+func (w *Window) ComboSimple(labels []string, selected int, itemHeight int, dropDownWidth, dropDownHeight float32) int {
 	if dropDownWidth == 0 {
 		dropDownWidth = getDynamicWidth(w.ctx)
 	}
-	return nk.NkCombo(w.ctx, labels, int32(len(labels)), selected, itemHeight, nk.NkVec2(dropDownWidth, dropDownHeight))
+	return int(nk.NkCombo(w.ctx, labels, int32(len(labels)), int32(selected), int32(itemHeight), nk.NkVec2(dropDownWidth, dropDownHeight)))
 }
 
 func (w *Window) ComboLabel(label string, dropDownWidth, dropDownHeight float32, itemBuilder BuilderFunc) {
@@ -84,8 +84,8 @@ func (w *Window) ComboLabel(label string, dropDownWidth, dropDownHeight float32,
 	}
 }
 
-func (w *Window) PropertyInt(label string, min int32, val *int32, max int32, step int32, incPerPixel float32) {
-	nk.NkPropertyInt(w.ctx, label, min, val, max, step, incPerPixel)
+func (w *Window) PropertyInt(label string, min int, val *int32, max int, step int, incPerPixel float32) {
+	nk.NkPropertyInt(w.ctx, label, int32(min), val, int32(max), int32(step), incPerPixel)
 }
 
 func (w *Window) PropertyFloat(label string, min float32, val *float32, max float32, step float32, incPerPixel float32) {
@@ -201,4 +201,8 @@ func (w *Window) Tree(treeType nk.TreeType, title string, initialState nk.Collap
 		builder(w)
 		nk.NkTreePop(w.ctx)
 	}
+}
+
+func (w *Window) WidgetBounds() nk.Rect {
+	return nk.NkWidgetBounds(w.ctx)
 }
