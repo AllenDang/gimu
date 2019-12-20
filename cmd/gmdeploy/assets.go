@@ -4,7 +4,7 @@ import "fmt"
 
 //darwin
 
-func darwin_plist(name string) string {
+func darwinPlist(name string) string {
 	return fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -40,13 +40,6 @@ func darwin_plist(name string) string {
 `, name)
 }
 
-func darwin_pkginfo() string {
+func darwinPkginfo() string {
 	return "APPL????\n"
-}
-
-func darwin_nix_script(name string) string {
-	return fmt.Sprintf(`#!/bin/bash
-export PATH=$HOME/.nix-profile/bin:$PATH
-${0%%/*}/%v_bin
-`, name)
 }
