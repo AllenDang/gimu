@@ -1,6 +1,6 @@
-# agimu
+# gimu
 
-Immediate GUI for go based nuklear.
+Cross-platform GUI for go based on nuklear.
 
 Package nk provides Go bindings for nuklear.h — a small ANSI C gui library. See [github.com/Immediate-Mode-UI/Nuklear](https://github.com/Immediate-Mode-UI/Nuklear).
 
@@ -75,6 +75,26 @@ func main() {
 ```
 
 Save and run.
+
+### Deploy
+
+gimu provides a tool to pack compiled executable for several platform to enable.
+
+```
+go get -u github.com/AllenDang/gimu/cmd/gmdeploy
+```
+
+Run gmdeploy in your project folder.
+
+```
+gmdeploy -icon AppIcon.icns .
+```
+
+Then you can find bundled executable in [PROJECTDIR]/build/[OS]/
+
+Note:
+
+Currently only MacOS is supported. Windows and linux is WIP.
 
 ### Layout system
 
