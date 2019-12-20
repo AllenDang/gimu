@@ -206,3 +206,7 @@ func (w *Window) Tree(treeType nk.TreeType, title string, initialState nk.Collap
 func (w *Window) WidgetBounds() nk.Rect {
 	return nk.NkWidgetBounds(w.ctx)
 }
+
+func (w *Window) GetInput() *Input {
+	return &Input{input: w.ctx.Input()}
+}
