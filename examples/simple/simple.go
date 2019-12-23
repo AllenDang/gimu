@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image"
 	"image/color"
 	"image/png"
 	"log"
@@ -32,7 +31,7 @@ var (
 )
 
 func msgbox(w *gimu.Window) {
-	opened := w.Popup("Message", gimu.PopupStatic, gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, image.Rect(30, 10, 300, 100), func(w *gimu.Window) {
+	opened := w.Popup("Message", gimu.PopupStatic, gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, nk.NkRect(30, 10, 300, 100), func(w *gimu.Window) {
 		w.Row(25).Dynamic(1)
 		w.Label("Here is a pop up window", "LC")
 		if w.Button("Close") {
@@ -116,7 +115,7 @@ func widgets(w *gimu.Window) {
 
 func updatefn(w *gimu.Window) {
 	width, height := w.MasterWindow().GetSize()
-	bounds := image.Rect(0, 0, int(width), int(height))
+	bounds := nk.NkRect(0, 0, float32(width), float32(height))
 
 	w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
 		_, h := w.MasterWindow().GetSize()

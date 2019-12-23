@@ -11,12 +11,12 @@ type Canvas struct {
 	buffer *nk.CommandBuffer
 }
 
-func (c *Canvas) FillRect(rect image.Rectangle, rounding float32, color color.RGBA) {
-	nk.NkFillRect(c.buffer, toNkRect(rect), rounding, toNkColor(color))
+func (c *Canvas) FillRect(rect nk.Rect, rounding float32, color color.RGBA) {
+	nk.NkFillRect(c.buffer, rect, rounding, toNkColor(color))
 }
 
-func (c *Canvas) FillCircle(rect image.Rectangle, color color.RGBA) {
-	nk.NkFillCircle(c.buffer, toNkRect(rect), toNkColor(color))
+func (c *Canvas) FillCircle(rect nk.Rect, color color.RGBA) {
+	nk.NkFillCircle(c.buffer, rect, toNkColor(color))
 }
 
 func (c *Canvas) FillTriangle(p1, p2, p3 image.Point, color color.RGBA) {

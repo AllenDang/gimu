@@ -5,6 +5,7 @@ import (
 )
 
 type row struct {
+	win    *Window
 	ctx    *nk.Context
 	height int
 }
@@ -36,4 +37,12 @@ func (r *row) Ratio(ratio ...float32) {
 
 	nk.NkLayoutRowEnd(r.ctx)
 
+}
+
+func (r *row) Space(spaceType nk.LayoutFormat, builder BuilderFunc) {
+	nk.NkLayoutSpaceBegin(r.ctx, spaceType, float32(r.height), 2147483647)
+
+	builder(r.win)
+
+	nk.NkLayoutSpaceEnd(r.ctx)
 }

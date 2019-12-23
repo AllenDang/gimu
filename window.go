@@ -1,7 +1,6 @@
 package gimu
 
 import (
-	"image"
 	"image/color"
 
 	"github.com/AllenDang/gimu/nk"
@@ -32,8 +31,8 @@ func (w *Window) MasterWindow() *MasterWindow {
 	return w.mw
 }
 
-func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, builder BuilderFunc) {
-	if nk.NkBegin(w.ctx, title, toNkRect(bounds), nk.Flags(flags)) > 0 {
+func (w *Window) Window(title string, bounds nk.Rect, flags WindowFlag, builder BuilderFunc) {
+	if nk.NkBegin(w.ctx, title, bounds, nk.Flags(flags)) > 0 {
 		builder(w)
 		nk.NkEnd(w.ctx)
 	}
@@ -41,9 +40,14 @@ func (w *Window) Window(title string, bounds image.Rectangle, flags WindowFlag, 
 
 func (w *Window) Row(height int) *row {
 	return &row{
+		win:    w,
 		ctx:    w.ctx,
 		height: height,
 	}
+}
+
+func (w *Window) Push(rect nk.Rect) {
+	nk.NkLayoutSpacePush(w.ctx, rect)
 }
 
 func (w *Window) Spacing(cols int) {
@@ -115,8 +119,8 @@ const (
 	PopupDynamic = 1
 )
 
-func (w *Window) Popup(title string, popupType PopupType, flag WindowFlag, bounds image.Rectangle, builder BuilderFunc) bool {
-	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, nk.Flags(flag), toNkRect(bounds))
+func (w *Window) Popup(title string, popupType PopupType, flag WindowFlag, bounds nk.Rect, builder BuilderFunc) bool {
+	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, nk.Flags(flag), bounds)
 	if result > 0 {
 		builder(w)
 		nk.NkPopupEnd(w.ctx)

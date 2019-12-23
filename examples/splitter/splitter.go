@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image"
 	"runtime"
 
 	"github.com/AllenDang/gimu"
@@ -17,7 +16,7 @@ var (
 func builder(w *gimu.Window) {
 	width, height := w.MasterWindow().GetSize()
 
-	w.Window("", image.Rect(0, 0, int(width), int(height)), nk.WindowNoScrollbar, func(w *gimu.Window) {
+	w.Window("", nk.NkRect(0, 0, float32(width), float32(height)), nk.WindowNoScrollbar, func(w *gimu.Window) {
 		rightWidth = int(width) - leftWidth - splitterWidth - 25
 
 		w.Row(int(height-10)).Static(leftWidth, splitterWidth, rightWidth)

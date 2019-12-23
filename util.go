@@ -74,10 +74,6 @@ func getDynamicWidth(ctx *nk.Context) float32 {
 	return bounds.W() - (padding * 2)
 }
 
-func toNkRect(rect image.Rectangle) nk.Rect {
-	return nk.NkRect(float32(rect.Min.X), float32(rect.Min.Y), float32(rect.Max.X), float32(rect.Max.Y))
-}
-
 func ImgToRgba(img image.Image) *image.RGBA {
 	switch trueim := img.(type) {
 	case *image.RGBA:

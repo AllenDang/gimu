@@ -4,6 +4,7 @@ package nk
 #include "nuklear.h"
 */
 import "C"
+import "bytes"
 
 var (
 	clipboardPlugin ClipboardPlugin
@@ -44,18 +45,9 @@ func (b *Buffer) Type() AllocationType {
 	return (AllocationType)(b._type)
 }
 
-func (l *ListView) Begin() int {
-	return (int)(l.begin)
-}
-
-func (l *ListView) End() int {
-	return (int)(l.end)
-}
-
-func (l *ListView) Count() int {
-	return (int)(l.count)
-}
-
-func (panel *Panel) Bounds() *Rect {
-	return (*Rect)(&panel.bounds)
+func (t *TextEdit) GetGoString() string {
+	nkstr := t.GetString()
+	b := C.GoBytes(*nkstr.GetBuffer().GetMemory().GetPtr(), C.int(*nkstr.GetBuffer().GetSize()))
+	r := bytes.Runes(b)[:*nkstr.GetLen()]
+	return string(r)
 }

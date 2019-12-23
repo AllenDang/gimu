@@ -5,8 +5,6 @@ package nk
 */
 import "C"
 
-import "bytes"
-
 func (t *StyleText) Color() *Color {
 	return (*Color)(&t.color)
 }
@@ -37,31 +35,4 @@ func (w *StyleWindow) Padding() *Vec2 {
 
 func (w *StyleWindow) GroupPadding() *Vec2 {
 	return (*Vec2)(&w.group_padding)
-}
-
-func SetSpacing(ctx *Context, v Vec2) {
-	*ctx.Style().Window().Spacing() = v
-}
-
-func SetPadding(ctx *Context, v Vec2) {
-	*ctx.Style().Window().Padding() = v
-}
-
-func SetGroupPadding(ctx *Context, v Vec2) {
-	*ctx.Style().Window().GroupPadding() = v
-}
-
-func SetTextColor(ctx *Context, color Color) {
-	*ctx.Style().Text().Color() = color
-}
-
-func SetBackgroundColor(ctx *Context, color Color) {
-	ctx.Style().Window().fixed_background = C.struct_nk_style_item(NkStyleItemColor(color))
-}
-
-func (t *TextEdit) GetGoString() string {
-	nkstr := t.GetString()
-	b := C.GoBytes(*nkstr.GetBuffer().GetMemory().GetPtr(), C.int(*nkstr.GetBuffer().GetSize()))
-	r := bytes.Runes(b)[:*nkstr.GetLen()]
-	return string(r)
 }
