@@ -134,6 +134,38 @@ Define a row with two widgets each of them will have same width.
 w.Row(25).Dynamic(2)
 ```
 
+#### Flexible Layout
+
+Finally the most flexible API directly allows you to place widgets inside the window. The space layout API is an immediate mode API which does not support row auto repeat and directly sets position and size of a widget. Position and size hereby can be either specified as ratio of allocated space or allocated space local position and pixel size. Since this API is quite powerful there are a number of utility functions to get the available space and convert between local allocated space and screen space.
+
+```go
+w.Row(500).Space(nk.Static, func(w *gimu.Window) {
+  w.Push(nk.NkRect(0, 0, 150, 150))
+    w.Group("Group Left", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+
+  w.Push(nk.NkRect(160, 0, 150, 240))
+    w.Group("Group Top", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+
+  w.Push(nk.NkRect(160, 250, 150, 250))
+  w.Group("Group Bottom", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+
+  w.Push(nk.NkRect(320, 0, 150, 150))
+  w.Group("Group Right Top", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+
+  w.Push(nk.NkRect(320, 160, 150, 150))
+  w.Group("Group Right Center", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+
+  w.Push(nk.NkRect(320, 320, 150, 150))
+  w.Group("Group Right Center", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  })
+})
+```
+
 ## Widgets usage
 
 Most of the widget's usage are very straight forward.
