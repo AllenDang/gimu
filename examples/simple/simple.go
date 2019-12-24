@@ -31,7 +31,7 @@ var (
 )
 
 func msgbox(w *gimu.Window) {
-	opened := w.Popup("Message", gimu.PopupStatic, gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, nk.NkRect(30, 10, 300, 100), func(w *gimu.Window) {
+	opened := w.Popup("Message", gimu.PopupStatic, nk.WindowTitle|nk.WindowNoScrollbar|nk.WindowClosable, nk.NkRect(30, 10, 300, 100), func(w *gimu.Window) {
 		w.Row(25).Dynamic(1)
 		w.Label("Here is a pop up window", "LC")
 		if w.Button("Close") {
@@ -117,13 +117,13 @@ func updatefn(w *gimu.Window) {
 	width, height := w.MasterWindow().GetSize()
 	bounds := nk.NkRect(0, 0, float32(width), float32(height))
 
-	w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
+	w.Window("Simple Demo", bounds, nk.WindowNoScrollbar, func(w *gimu.Window) {
 		_, h := w.MasterWindow().GetSize()
 		w.Row(int(h - 10)).Dynamic(2)
-		w.Group("Group1", gimu.WindowBorder|gimu.WindowTitle, func(g1 *gimu.Window) {
+		w.Group("Group1", nk.WindowBorder|nk.WindowTitle, func(g1 *gimu.Window) {
 			widgets(g1)
 		})
-		w.Group("Group2", gimu.WindowTitle|gimu.WindowNoScrollbar, func(w *gimu.Window) {
+		w.Group("Group2", nk.WindowTitle|nk.WindowNoScrollbar, func(w *gimu.Window) {
 			// Menu
 			w.Menubar(func(w *gimu.Window) {
 				w.Row(25).Static(60, 60)
@@ -146,7 +146,7 @@ func updatefn(w *gimu.Window) {
 
 			w.Row(int(float32(h-10)/3) - 9).Dynamic(1)
 
-			w.Group("Group2-1", gimu.WindowBorder, func(w *gimu.Window) {
+			w.Group("Group2-1", nk.WindowBorder, func(w *gimu.Window) {
 				// Image
 				w.Row(170).Static(300)
 				if picture != nil {
@@ -174,7 +174,7 @@ func updatefn(w *gimu.Window) {
 
 			})
 
-			w.Group("Group2-2", gimu.WindowBorder, func(w *gimu.Window) {
+			w.Group("Group2-2", nk.WindowBorder, func(w *gimu.Window) {
 				w.Tree(nk.TreeNode, "Tree node1", nk.Minimized, "Tree node1", 0, func(w *gimu.Window) {
 					w.Row(25).Dynamic(1)
 					w.Label("Label inside tree node", "LC")
@@ -191,7 +191,7 @@ func updatefn(w *gimu.Window) {
 				})
 			})
 
-			w.Group("Group2-3", gimu.WindowBorder, func(w *gimu.Window) {
+			w.Group("Group2-3", nk.WindowBorder, func(w *gimu.Window) {
 				w.Tree(nk.TreeTab, "Tree node21", nk.Maximized, "Tree node21", 0, func(w *gimu.Window) {
 					w.Row(25).Dynamic(1)
 					w.Label("Label inside tree node", "LC")

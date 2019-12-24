@@ -6,22 +6,6 @@ import (
 	"github.com/AllenDang/gimu/nk"
 )
 
-type WindowFlag int32
-
-const (
-	WindowBorder         = nk.WindowBorder
-	WindowMovable        = nk.WindowMovable
-	WindowScalable       = nk.WindowScalable
-	WindowClosable       = nk.WindowClosable
-	WindowMinimizable    = nk.WindowMinimizable
-	WindowNoScrollbar    = nk.WindowNoScrollbar
-	WindowTitle          = nk.WindowTitle
-	WindowScrollAutoHide = nk.WindowScrollAutoHide
-	WindowBackground     = nk.WindowBackground
-	WindowScaleLeft      = nk.WindowScaleLeft
-	WindowNoInput        = nk.WindowNoInput
-)
-
 type Window struct {
 	ctx *nk.Context
 	mw  *MasterWindow
@@ -31,15 +15,15 @@ func (w *Window) MasterWindow() *MasterWindow {
 	return w.mw
 }
 
-func (w *Window) Window(title string, bounds nk.Rect, flags WindowFlag, builder BuilderFunc) {
-	if nk.NkBegin(w.ctx, title, bounds, nk.Flags(flags)) > 0 {
+func (w *Window) Window(title string, bounds nk.Rect, flags nk.Flags, builder BuilderFunc) {
+	if nk.NkBegin(w.ctx, title, bounds, flags) > 0 {
 		builder(w)
 		nk.NkEnd(w.ctx)
 	}
 }
 
-func (w *Window) Row(height int) *row {
-	return &row{
+func (w *Window) Row(height int) *Row {
+	return &Row{
 		win:    w,
 		ctx:    w.ctx,
 		height: height,
@@ -119,8 +103,8 @@ const (
 	PopupDynamic = 1
 )
 
-func (w *Window) Popup(title string, popupType PopupType, flag WindowFlag, bounds nk.Rect, builder BuilderFunc) bool {
-	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, nk.Flags(flag), bounds)
+func (w *Window) Popup(title string, popupType PopupType, flag nk.Flags, bounds nk.Rect, builder BuilderFunc) bool {
+	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, flag, bounds)
 	if result > 0 {
 		builder(w)
 		nk.NkPopupEnd(w.ctx)
@@ -133,8 +117,8 @@ func (w *Window) ClosePopup() {
 	nk.NkPopupClose(w.ctx)
 }
 
-func (w *Window) Group(title string, flag WindowFlag, builder BuilderFunc) bool {
-	result := nk.NkGroupBegin(w.ctx, title, nk.Flags(flag))
+func (w *Window) Group(title string, flag nk.Flags, builder BuilderFunc) bool {
+	result := nk.NkGroupBegin(w.ctx, title, flag)
 	if result > 0 {
 		builder(w)
 		nk.NkGroupEnd(w.ctx)
@@ -180,9 +164,9 @@ func (w *Window) GetStyle() *nk.Style {
 	return w.ctx.GetStyle()
 }
 
-func (w *Window) Contextual(flag WindowFlag, width, height int, builder BuilderFunc) {
+func (w *Window) Contextual(flag nk.Flags, width, height int, builder BuilderFunc) {
 	bounds := nk.NkWidgetBounds(w.ctx)
-	if nk.NkContextualBegin(w.ctx, nk.Flags(flag), nk.NkVec2(float32(width), float32(height)), bounds) > 0 {
+	if nk.NkContextualBegin(w.ctx, flag, nk.NkVec2(float32(width), float32(height)), bounds) > 0 {
 		builder(w)
 		nk.NkContextualEnd(w.ctx)
 	}
@@ -213,4 +197,20 @@ func (w *Window) WidgetBounds() nk.Rect {
 
 func (w *Window) GetInput() *Input {
 	return &Input{input: w.ctx.Input()}
+}
+
+type ListViewItemBuilder func(w *Window, i int, item interface{})
+
+// Should only called in ListView to define the row layout.
+type RowLayoutFunc func(r *Row)
+
+func (w *Window) ListView(view *nk.ListView, id string, flags nk.Flags, rowHeight int, items []interface{}, rowLayoutFunc RowLayoutFunc, builder ListViewItemBuilder) {
+	if nk.NkListViewBegin(w.ctx, view, id, flags, int32(rowHeight), int32(len(items))) > 0 {
+		rowLayoutFunc(w.Row(rowHeight))
+
+		for i := 0; i < view.Count(); i++ {
+			builder(w, i, items[view.Begin()+i])
+		}
+		nk.NkListViewEnd(view)
+	}
 }
