@@ -39,38 +39,38 @@ Let's create a simple demo.
 package main
 
 import (
-	"fmt"
-	"image"
-	"runtime"
+  "fmt"
+  "image"
+  "runtime"
 
-	"github.com/AllenDang/gimu"
+  "github.com/AllenDang/gimu"
 )
 
 func builder(w *gimu.Window) {
-	// Create a new window inside master window
-	width, height := w.MasterWindow().GetSize()
-	bounds := image.Rect(0, 0, width, height)
+  // Create a new window inside master window
+  width, height := w.MasterWindow().GetSize()
+  bounds := image.Rect(0, 0, width, height)
 
-	w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
-		// Define the row with 25px height, and contains one widget for each row.
-		w.Row(25).Dynamic(1)
-		// Let's create a label first, note the second parameter "LC" means the text alignment is left-center.
-		w.Label("I'm a label", "LC")
-		// Create a button.
-		clicked := w.Button("Click Me")
-		if clicked {
-			fmt.Println("The button is clicked")
-		}
-	})
+  w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
+    // Define the row with 25px height, and contains one widget for each row.
+    w.Row(25).Dynamic(1)
+    // Let's create a label first, note the second parameter "LC" means the text alignment is left-center.
+    w.Label("I'm a label", "LC")
+    // Create a button.
+    clicked := w.Button("Click Me")
+    if clicked {
+      fmt.Println("The button is clicked")
+    }
+  })
 }
 
 func main() {
-	runtime.LockOSThread()
+  runtime.LockOSThread()
 
-	// Create master window
-	wnd := gimu.NewMasterWindow("Simple Demo", 200, 100, gimu.MasterWindowFlagDefault)
+  // Create master window
+  wnd := gimu.NewMasterWindow("Simple Demo", 200, 100, gimu.MasterWindowFlagDefault)
 
-	wnd.Main(builder)
+  wnd.Main(builder)
 }
 ```
 
@@ -286,42 +286,42 @@ ListView is designed to display very huge amount of data and only render visible
 
 ```go
 var (
-	listview *nk.ListView
-	listitem []interface{}
+  listview *nk.ListView
+  listitem []interface{}
 )
 
 func builder(w *gimu.Window) {
-	width, height := w.MasterWindow().GetSize()
-	bounds := nk.NkRect(0, 0, float32(width), float32(height))
-	w.Window("", bounds, 0, func(w *gimu.Window) {
-		w.Row(int(height - 18)).Dynamic(1)
-		w.ListView(listview, "huge list", nk.WindowBorder, 25,
-			listitem,
-			func(r *gimu.Row) {
-				r.Dynamic(1)
-			},
-			func(w *gimu.Window, i int, item interface{}) {
-				if s, ok := item.(string); ok {
-					w.Label(s, "LC")
-				}
-			})
-	})
+  width, height := w.MasterWindow().GetSize()
+  bounds := nk.NkRect(0, 0, float32(width), float32(height))
+  w.Window("", bounds, 0, func(w *gimu.Window) {
+    w.Row(int(height - 18)).Dynamic(1)
+    w.ListView(listview, "huge list", nk.WindowBorder, 25,
+      listitem,
+      func(r *gimu.Row) {
+        r.Dynamic(1)
+      },
+      func(w *gimu.Window, i int, item interface{}) {
+        if s, ok := item.(string); ok {
+          w.Label(s, "LC")
+        }
+      })
+  })
 }
 
 func main() {
-	// Init the listview widget
-	listview = &nk.ListView{}
+  // Init the listview widget
+  listview = &nk.ListView{}
 
-	// Create list items
-	listitem = make([]interface{}, 12345)
-	for i := range listitem {
-		listitem[i] = fmt.Sprintf("Label item %d", i)
-	}
+  // Create list items
+  listitem = make([]interface{}, 12345)
+  for i := range listitem {
+    listitem[i] = fmt.Sprintf("Label item %d", i)
+  }
 
-	runtime.LockOSThread()
+  runtime.LockOSThread()
 
-	wnd := gimu.NewMasterWindow("Huge list", 800, 600, gimu.MasterWindowFlagNoResize)
-	wnd.Main(builder)
+  wnd := gimu.NewMasterWindow("Huge list", 800, 600, gimu.MasterWindowFlagNoResize)
+  wnd.Main(builder)
 }
 ```
 
