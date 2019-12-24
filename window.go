@@ -96,15 +96,8 @@ func (w *Window) SelectableLabel(label string, align string, selected *bool) {
 	*selected = i > 0
 }
 
-type PopupType int32
-
-const (
-	PopupStatic  = iota
-	PopupDynamic = 1
-)
-
-func (w *Window) Popup(title string, popupType PopupType, flag nk.Flags, bounds nk.Rect, builder BuilderFunc) bool {
-	result := nk.NkPopupBegin(w.ctx, nk.PopupType(popupType), title, flag, bounds)
+func (w *Window) Popup(title string, popupType nk.PopupType, flag nk.Flags, bounds nk.Rect, builder BuilderFunc) bool {
+	result := nk.NkPopupBegin(w.ctx, popupType, title, flag, bounds)
 	if result > 0 {
 		builder(w)
 		nk.NkPopupEnd(w.ctx)

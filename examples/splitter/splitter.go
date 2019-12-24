@@ -20,7 +20,7 @@ func builder(w *gimu.Window) {
 		rightWidth = int(width) - leftWidth - splitterWidth - 25
 
 		w.Row(int(height-10)).Static(leftWidth, splitterWidth, rightWidth)
-		w.Group("Left Group", gimu.WindowTitle|gimu.WindowBorder|gimu.WindowNoScrollbar, func(w *gimu.Window) {
+		w.Group("Left Group", nk.WindowTitle|nk.WindowBorder|nk.WindowNoScrollbar, func(w *gimu.Window) {
 			w.Row(25).Dynamic(1)
 			w.Label("Content", "LC")
 		})
@@ -35,7 +35,7 @@ func builder(w *gimu.Window) {
 			rightWidth -= int(x)
 		}
 
-		w.Group("Right Group", gimu.WindowTitle|gimu.WindowBorder|gimu.WindowNoScrollbar, func(w *gimu.Window) {
+		w.Group("Right Group", nk.WindowTitle|nk.WindowBorder|nk.WindowNoScrollbar, func(w *gimu.Window) {
 			w.Row(25).Dynamic(1)
 			w.Label("Drag the space between two group to resize", "LC")
 		})

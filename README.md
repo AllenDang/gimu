@@ -49,9 +49,9 @@ import (
 func builder(w *gimu.Window) {
   // Create a new window inside master window
   width, height := w.MasterWindow().GetSize()
-  bounds := image.Rect(0, 0, width, height)
+  bounds := nk.NkRect(0, 0, float32(width), float32(height))
 
-  w.Window("Simple Demo", bounds, gimu.WindowNoScrollbar, func(w *gimu.Window) {
+  w.Window("Simple Demo", bounds, nk.WindowNoScrollbar, func(w *gimu.Window) {
     // Define the row with 25px height, and contains one widget for each row.
     w.Row(25).Dynamic(1)
     // Let's create a label first, note the second parameter "LC" means the text alignment is left-center.
@@ -141,27 +141,27 @@ Finally the most flexible API directly allows you to place widgets inside the wi
 ```go
 w.Row(500).Space(nk.Static, func(w *gimu.Window) {
   w.Push(nk.NkRect(0, 0, 150, 150))
-    w.Group("Group Left", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+    w.Group("Group Left", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 
   w.Push(nk.NkRect(160, 0, 150, 240))
-    w.Group("Group Top", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+    w.Group("Group Top", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 
   w.Push(nk.NkRect(160, 250, 150, 250))
-  w.Group("Group Bottom", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  w.Group("Group Bottom", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 
   w.Push(nk.NkRect(320, 0, 150, 150))
-  w.Group("Group Right Top", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  w.Group("Group Right Top", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 
   w.Push(nk.NkRect(320, 160, 150, 150))
-  w.Group("Group Right Center", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  w.Group("Group Right Center", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 
   w.Push(nk.NkRect(320, 320, 150, 150))
-  w.Group("Group Right Center", gimu.WindowBorder|gimu.WindowTitle, func(w *gimu.Window) {
+  w.Group("Group Right Center", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
   })
 })
 ```
@@ -343,8 +343,8 @@ func msgbox(w *gimu.Window) {
   opened := w.Popup(
     "Message", 
     gimu.PopupStatic, 
-    gimu.WindowTitle|gimu.WindowNoScrollbar|gimu.WindowClosable, 
-    image.Rect(30, 10, 300, 100), 
+    nk.WindowTitle|nk.WindowNoScrollbar|nk.WindowClosable, 
+    nk.NkRect(30, 10, 300, 100), 
     func(w *gimu.Window) {
       w.Row(25).Dynamic(1)
       w.Label("Here is a pop up window", "LC")

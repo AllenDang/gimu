@@ -31,7 +31,7 @@ var (
 )
 
 func msgbox(w *gimu.Window) {
-	opened := w.Popup("Message", gimu.PopupStatic, nk.WindowTitle|nk.WindowNoScrollbar|nk.WindowClosable, nk.NkRect(30, 10, 300, 100), func(w *gimu.Window) {
+	opened := w.Popup("Message", nk.PopupStatic, nk.WindowTitle|nk.WindowNoScrollbar|nk.WindowClosable, nk.NkRect(30, 10, 300, 100), func(w *gimu.Window) {
 		w.Row(25).Dynamic(1)
 		w.Label("Here is a pop up window", "LC")
 		if w.Button("Close") {
