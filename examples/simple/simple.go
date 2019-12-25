@@ -105,6 +105,8 @@ func widgets(w *gimu.Window) {
 	w.Row(25).Dynamic(2)
 	w.SelectableLabel("Selectable 1", "LC", &selected1)
 	w.SelectableLabel("Selectable 2", "LC", &selected2)
+	w.SelectableSymbolLabel(nk.SymbolPlus, "Selectable Symbol 1", "RC", &selected1)
+	w.SelectableSymbolLabel(nk.SymbolMinus, "Selectable Symbol 2", "RC", &selected2)
 
 	w.Row(25).Static(0, 100)
 	textedit.Edit(w, nk.EditField, gimu.EditFilterDefault)

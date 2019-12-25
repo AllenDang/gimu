@@ -55,6 +55,26 @@ func (w *Window) Button(content string) bool {
 	return nk.NkButtonLabel(w.ctx, content) > 0
 }
 
+func (w *Window) ButtonColor(color nk.Color) bool {
+	return nk.NkButtonColor(w.ctx, color) > 0
+}
+
+func (w *Window) ButtonImage(img nk.Image) bool {
+	return nk.NkButtonImage(w.ctx, img) > 0
+}
+
+func (w *Window) ButtonImageLabel(img nk.Image, label, align string) bool {
+	return nk.NkButtonImageLabel(w.ctx, img, label, toNkFlag(align)) > 0
+}
+
+func (w *Window) ButtonSymbol(symbol nk.SymbolType) bool {
+	return nk.NkButtonSymbol(w.ctx, symbol) > 0
+}
+
+func (w *Window) ButtonSymbolLabel(symbol nk.SymbolType, label, align string) bool {
+	return nk.NkButtonSymbolLabel(w.ctx, symbol, label, toNkFlag(align)) > 0
+}
+
 func (w *Window) Progress(current *uint, max uint, modifiable bool) {
 	nk.NkProgress(w.ctx, (*nk.Size)(current), nk.Size(max), toInt32(modifiable))
 }
@@ -99,6 +119,13 @@ func (w *Window) SelectableLabel(label string, align string, selected *bool) {
 	i := toInt32(*selected)
 	nk.NkSelectableLabel(w.ctx, label, toNkFlag(align), &i)
 	*selected = i > 0
+}
+
+func (w *Window) SelectableSymbolLabel(symbol nk.SymbolType, label, align string, selected *bool) {
+	i := make([]int32, 1)
+	i[0] = toInt32(*selected)
+	nk.NkSelectableSymbolLabel(w.ctx, symbol, label, toNkFlag(align), i)
+	*selected = i[0] > 0
 }
 
 func (w *Window) Popup(title string, popupType nk.PopupType, flag nk.Flags, bounds nk.Rect, builder BuilderFunc) bool {
