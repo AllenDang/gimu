@@ -1,6 +1,7 @@
 package gimu
 
 import (
+	"fmt"
 	"image/color"
 
 	"github.com/AllenDang/gimu/nk"
@@ -36,6 +37,10 @@ func (w *Window) Push(rect nk.Rect) {
 
 func (w *Window) Spacing(cols int) {
 	nk.NkSpacing(w.ctx, int32(cols))
+}
+
+func (w *Window) L(content string) {
+	w.Label(content, "LC")
 }
 
 func (w *Window) Label(content string, align string) {
@@ -205,5 +210,80 @@ func (w *Window) ListView(view *nk.ListView, id string, flags nk.Flags, rowHeigh
 			builder(w, i, items[view.Begin()+i])
 		}
 		nk.NkListViewEnd(view)
+	}
+}
+
+func (w *Window) Chart(chartType nk.ChartType, min, max float32, data []float32) {
+	selected := -1
+
+	if nk.NkChartBegin(w.ctx, chartType, int32(len(data)), min, max) > 0 {
+		for i, d := range data {
+			res := nk.NkChartPush(w.ctx, d)
+			if res == nk.ChartHovering {
+				selected = i
+			}
+		}
+		nk.NkChartEnd(w.ctx)
+	}
+
+	// Show tooltip on mouse hovering
+	if selected != -1 {
+		nk.NkTooltip(w.ctx, fmt.Sprintf("%.2f", data[selected]))
+	}
+}
+
+func (w *Window) ChartColored(chartType nk.ChartType, color, activeColor nk.Color, min, max float32, data []float32) {
+	selected := -1
+	if nk.NkChartBeginColored(w.ctx, chartType, color, activeColor, int32(len(data)), min, max) > 0 {
+		for i, d := range data {
+			res := nk.NkChartPush(w.ctx, d)
+			if res == nk.ChartHovering {
+				selected = i
+			}
+		}
+		nk.NkChartEnd(w.ctx)
+	}
+
+	// Show tooltip on mouse hovering
+	if selected != -1 {
+		nk.NkTooltip(w.ctx, fmt.Sprintf("%.2f", data[selected]))
+	}
+}
+
+type ChartSeries struct {
+	ChartType   nk.ChartType
+	Min, Max    float32
+	Data        []float32
+	Color       nk.Color
+	ActiveColor nk.Color
+}
+
+func (w *Window) ChartMixed(series []ChartSeries) {
+	if len(series) > 0 {
+		first := series[0]
+		if nk.NkChartBeginColored(w.ctx, first.ChartType, first.Color, first.ActiveColor, int32(len(first.Data)), first.Min, first.Max) > 0 {
+
+			for i, s := range series {
+				if i > 0 {
+					nk.NkChartAddSlotColored(w.ctx, s.ChartType, s.Color, s.ActiveColor, int32(len(s.Data)), s.Min, s.Max)
+				}
+			}
+
+			for i, s := range series {
+				selected := -1
+				for di, d := range s.Data {
+					res := nk.NkChartPushSlot(w.ctx, d, int32(i))
+					if res == nk.ChartHovering {
+						selected = di
+					}
+				}
+
+				if selected != -1 {
+					nk.NkTooltip(w.ctx, fmt.Sprintf("%.2f", s.Data[selected]))
+				}
+			}
+
+			nk.NkChartEnd(w.ctx)
+		}
 	}
 }
