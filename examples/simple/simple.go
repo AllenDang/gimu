@@ -122,8 +122,8 @@ func updatefn(w *gimu.Window) {
 	w.Window("Simple Demo", bounds, nk.WindowNoScrollbar, func(w *gimu.Window) {
 		_, h := w.MasterWindow().GetSize()
 		w.Row(int(h - 10)).Dynamic(2)
-		w.Group("Group1", nk.WindowBorder|nk.WindowTitle, func(g1 *gimu.Window) {
-			widgets(g1)
+		w.Group("Group1", nk.WindowBorder|nk.WindowTitle, func(w *gimu.Window) {
+			widgets(w)
 		})
 		w.Group("Group2", nk.WindowTitle|nk.WindowNoScrollbar, func(w *gimu.Window) {
 			// Menu

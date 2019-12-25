@@ -11,7 +11,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/go-gl/glfw/v3.2/glfw"
+	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 type PlatformInitOption int
@@ -34,7 +34,7 @@ func (c *NkGLFWClipbard) SetText(content string) {
 }
 
 func (c *NkGLFWClipbard) GetText() string {
-	str, _ := c.window.GetClipboardString()
+	str := c.window.GetClipboardString()
 	return str
 }
 

@@ -142,14 +142,11 @@ func (w *Window) ClosePopup() {
 	nk.NkPopupClose(w.ctx)
 }
 
-func (w *Window) Group(title string, flag nk.Flags, builder BuilderFunc) bool {
-	result := nk.NkGroupBegin(w.ctx, title, flag)
-	if result > 0 {
+func (w *Window) Group(title string, flag nk.Flags, builder BuilderFunc) {
+	if nk.NkGroupBegin(w.ctx, title, flag) > 0 {
 		builder(w)
 		nk.NkGroupEnd(w.ctx)
 	}
-
-	return result > 0
 }
 
 func (w *Window) Image(texture *Texture) {

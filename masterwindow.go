@@ -2,12 +2,12 @@ package gimu
 
 import (
 	"image/color"
+	"log"
 	"time"
 
 	"github.com/AllenDang/gimu/nk"
 	"github.com/go-gl/gl/v3.2-core/gl"
-	"github.com/go-gl/glfw/v3.2/glfw"
-	"github.com/xlab/closer"
+	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 type BuilderFunc func(w *Window)
@@ -37,10 +37,10 @@ type MasterWindow struct {
 
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlag) *MasterWindow {
 	if err := glfw.Init(); err != nil {
-		closer.Fatalln(err)
+		log.Fatalln(err)
 	}
 	glfw.WindowHint(glfw.ContextVersionMajor, 3)
-	glfw.WindowHint(glfw.ContextVersionMinor, 2)
+	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
@@ -50,12 +50,12 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlag) *M
 
 	win, err := glfw.CreateWindow(width, height, title, nil, nil)
 	if err != nil {
-		closer.Fatalln(err)
+		log.Fatalln(err)
 	}
 	win.MakeContextCurrent()
 
 	if err := gl.Init(); err != nil {
-		closer.Fatalln("opengl: init failed:", err)
+		log.Fatalln("OpenGL init failed:", err)
 	}
 	gl.Viewport(0, 0, int32(width), int32(height))
 
@@ -97,45 +97,30 @@ func (w *MasterWindow) Main(builder BuilderFunc) {
 	w.GetContext().SetStyle(nk.THEME_DARK)
 
 	window := Window{
-		ctx: w.GetContext(),
+		ctx: w.ctx,
 		mw:  w,
 	}
 
-	exitC := make(chan struct{}, 1)
-	doneC := make(chan struct{}, 1)
-	closer.Bind(func() {
-		close(exitC)
-		<-doneC
-	})
+	for !w.win.ShouldClose() {
+		glfw.PollEvents()
+		nk.NkPlatformNewFrame()
 
-	fpsTicker := time.NewTicker(time.Second / 30)
-	for {
-		select {
-		case <-exitC:
-			nk.NkPlatformShutdown()
-			glfw.Terminate()
-			fpsTicker.Stop()
-			close(doneC)
-			return
-		case <-fpsTicker.C:
-			if w.win.ShouldClose() {
-				close(exitC)
-				continue
-			}
-			glfw.PollEvents()
-			nk.NkPlatformNewFrame()
+		builder(&window)
 
-			builder(&window)
+		// Render
+		bg := make([]float32, 4)
+		nk.NkColorFv(bg, w.bgColor)
+		width, height := w.GetSize()
+		gl.Viewport(0, 0, int32(width), int32(height))
+		gl.Clear(gl.COLOR_BUFFER_BIT)
+		gl.ClearColor(bg[0], bg[1], bg[2], bg[3])
+		nk.NkPlatformRender(nk.AntiAliasingOn, w.maxVertexBuffer, w.maxElementBuffer)
+		w.win.SwapBuffers()
 
-			// Render
-			bg := make([]float32, 4)
-			nk.NkColorFv(bg, w.bgColor)
-			width, height := w.GetSize()
-			gl.Viewport(0, 0, int32(width), int32(height))
-			gl.Clear(gl.COLOR_BUFFER_BIT)
-			gl.ClearColor(bg[0], bg[1], bg[2], bg[3])
-			nk.NkPlatformRender(nk.AntiAliasingOn, w.maxVertexBuffer, w.maxElementBuffer)
-			w.win.SwapBuffers()
-		}
+		// 30 FPS
+		time.Sleep(time.Second / 30)
 	}
+
+	nk.NkPlatformShutdown()
+	glfw.Terminate()
 }
