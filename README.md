@@ -12,6 +12,8 @@ This package provides a go-style idiomatic wrapper for nuklear.
 
 <img src="https://github.com/AllenDang/gimu/blob/master/examples/screenshots.png" alt="Simple demo screen shots" width="800"/>
 
+<img src="https://github.com/AllenDang/gimu/blob/master/examples/screenshots2.png" alt="Chart demo screen shots" width="800"/>
+
 ## Overview
 
 Supported platforms are:
