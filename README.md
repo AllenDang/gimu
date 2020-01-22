@@ -2,7 +2,7 @@
 
 Strongly suggest NOT to use this project anymore, the auto-generated cgo wrapper of Nuklear has a random crash issue which is hard to fix (because cgo doesn't provide detail information about where the crash exactly happened).
 
-Please consider to use (giu)[https://github.com/AllenDang/giu] instead. It's very stable and activily developed.
+Please consider to use (giu)[https://github.com/AllenDang/giu] instead. It's very stable and actively developed.
 
 Cross-platform GUI for go based on nuklear.
 
